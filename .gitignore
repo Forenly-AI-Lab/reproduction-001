@@ -1,0 +1,15 @@
+# Virtual environments — three of them, one per LeRobot version under test.
+# Recreate with the commands in README.md; do not commit.
+.venv
+.venv-legacy
+.venv-032
+
+# Raw evaluation logs are progress-bar spam, tens of MB, and carry no
+# information the result JSON does not. The environment fingerprint and the
+# final numbers ARE committed.
+*.log
+results/*/eval/
+nohup.out
+
+__pycache__/
+*.pyc
