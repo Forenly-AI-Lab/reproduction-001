@@ -59,6 +59,45 @@ def _cpu() -> str:
     return platform.processor() or "unknown"
 
 
+def _cpu_count() -> dict[str, int | None]:
+    """How many cores the run could actually use.
+
+    PushT evaluation is dominated by environment simulation, not by network
+    inference, so this number can matter more than the GPU. `os.cpu_count()`
+    reports the host's cores, which in a container is usually a lie -- the
+    scheduler affinity and the cgroup quota are the two limits that bind.
+    All three are recorded because they disagree, and the disagreement is
+    itself worth seeing.
+    """
+    import os
+
+    out: dict[str, int | None] = {
+        "os_cpu_count": os.cpu_count(),
+        "sched_affinity": None,
+        "cgroup_quota": None,
+    }
+    try:
+        out["sched_affinity"] = len(os.sched_getaffinity(0))
+    except (AttributeError, OSError):
+        pass
+    # cgroup v2 first, then v1; "max" means no quota is set.
+    for path, period in (
+        ("/sys/fs/cgroup/cpu.max", None),
+        ("/sys/fs/cgroup/cpu/cpu.cfs_quota_us", "/sys/fs/cgroup/cpu/cpu.cfs_period_us"),
+    ):
+        try:
+            raw = open(path).read().split()
+            quota = raw[0]
+            if quota in ("max", "-1"):
+                break
+            per = int(raw[1]) if period is None else int(open(period).read())
+            out["cgroup_quota"] = int(int(quota) / per)
+            break
+        except (OSError, ValueError, IndexError):
+            continue
+    return out
+
+
 def _accelerator() -> dict[str, object]:
     """Whether a GPU was actually used -- not whether one exists.
 
@@ -98,6 +137,7 @@ def fingerprint() -> dict[str, object]:
         "python": sys.version.split()[0],
         "platform": platform.platform(),
         "cpu": _cpu(),
+        "cpu_count": _cpu_count(),
         "accelerator": _accelerator(),
         "watched_versions": _versions(),
         "pip_freeze": _pip_freeze(),

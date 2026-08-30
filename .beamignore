@@ -1,0 +1,10 @@
+# Beam syncs this directory into the container. It does not read .gitignore,
+# so the local virtualenvs -- several GB of nvidia CUDA wheels each -- get
+# uploaded on every run unless they are excluded here. The container builds
+# its own environment at /opt/repro; none of this is needed there.
+.venv
+.venv-*
+results/*/eval/
+*.log
+__pycache__/
+.git/

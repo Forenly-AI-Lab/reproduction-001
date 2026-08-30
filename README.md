@@ -21,21 +21,55 @@ it was measured on, using software that has moved on since.
 | Does it load on 0.5.1? | **No** — `policy_preprocessor.json` not found |
 | What is the last version that loads it? | **0.3.2** — the processor pipeline arrived in 0.3.3 |
 | Does it run on 0.3.2? | **Yes** |
-| Does it reach 65.4%? | **Measurement in progress** — pilot below |
+| Does it reach 65.4%? | **Not quite** — 62.0% over 500 episodes, 1.6 SE below the claim |
 
-### Pilot, n = 10
+### Result, n = 500
+
+Same checkpoint, same seed, same pinned versions, two different machines.
+
+| | CPU · Xeon 8581C, 8 vCPU | GPU · RTX 4090 (Beam) |
+|---|---|---|
+| Episodes | 80 (run stopped early) | **500** |
+| `pc_success` | 66.2 % | **62.0 %** |
+| `avg_max_reward` | — | **0.9461** |
+| Seconds per episode | 54.8 | **2.53** |
+| Wall clock | 1 h 13 m (of a projected 7.6 h) | **21.6 min** |
+
+**On the headline number.** 62.0% over 500 episodes carries a binomial standard
+error of 2.2 points, so the 3.4-point gap to the published 65.4% is about
+1.6 SE. That is not a significant difference at the 95% level, and we do not
+claim the model card is wrong. But it is not a clean confirmation either: our
+point estimate sits below the claim, and separating a real 3.4-point gap from
+noise would take roughly 1,500 episodes. `avg_max_reward` lands at 0.9461
+against a reported 0.955 — the same direction, slightly low.
+
+**On hardware.** Because both arms used `seed=1000`, the CPU run's 80 episodes
+are the *same* 80 episodes the GPU run began with. They agree to within a
+single episode:
 
 ```
-pc_success       60.0 %
-avg_max_reward   0.8898
-eval_s           933.9 s        (93.4 s per episode, CPU)
+first 80 episodes, CPU   66.2 %
+first 80 episodes, GPU   67.5 %
 ```
 
-**This is not a discrepancy.** At n = 10 the binomial standard error around
-p = 0.654 is about 15 percentage points; the 5.4-point gap is roughly 0.36 SE.
-Ten episodes cannot distinguish 60% from 65.4%, which is exactly why the full
-500-episode run is needed. That run is under way and this table will be
-replaced by its result.
+So the hardware does not move the result. What moves the result is `n`:
+
+```
+first  20 episodes   80.0 %
+first  40 episodes   67.5 %
+first  60 episodes   70.0 %
+first  80 episodes   67.5 %
+all   500 episodes   62.0 %
+```
+
+This study made that mistake on itself. An interim note in this repository once
+described the 80-episode figure as "converging on the published number." It was
+not converging; it was an optimistic window. A partial run is evidence about a
+partial run, and nothing more.
+
+Raw output, including all 500 per-episode records and the environment
+fingerprint of the machine that produced them:
+[`results/beam-rtx4090-eval.json`](results/beam-rtx4090-eval.json).
 
 ---
 

@@ -1,0 +1,22 @@
+{
+  "status": "ABORTED_BUT_INFORMATIVE",
+  "reason": "Cancelled by operator 2026-08-30 after 4 of 25 batches. The GPU arm on Beam superseded it as the study's headline measurement.",
+  "note": "lerobot writes eval_info.json only after all batches finish, so there is no machine-readable result file. The numbers below were read off the progress bar in run.log and are cumulative running_success_rate values, not a post-hoc recomputation.",
+  "episodes_requested": 500,
+  "episodes_completed": 80,
+  "batches_completed": "4/25",
+  "elapsed": "1:13:05",
+  "seconds_per_episode": 54.81,
+  "cumulative_success_rate_by_batch": {
+    "20": 0.675,
+    "40": 0.683,
+    "60": 0.662,
+    "80": 0.662
+  },
+  "success_rate": 0.662,
+  "standard_error": 0.0529,
+  "published_claim": 0.654,
+  "distance_in_se": 0.15,
+  "verdict": "66.2% on n=80 vs published 65.4% -- 0.15 SE apart, i.e. statistically indistinguishable.",
+  "environment": "see environment.json in this directory"
+}

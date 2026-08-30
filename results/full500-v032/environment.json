@@ -2,6 +2,11 @@
   "python": "3.12.3",
   "platform": "Linux-6.17.0-1022-gcp-x86_64-with-glibc2.39",
   "cpu": "INTEL(R) XEON(R) PLATINUM 8581C CPU @ 2.30GHz",
+  "cpu_count": {
+    "os_cpu_count": 8,
+    "sched_affinity": 8,
+    "cgroup_quota": null
+  },
   "accelerator": {
     "torch_present": true,
     "cuda_available": false,
