@@ -2,6 +2,8 @@
 
 This repository is part of **[Forenly AI Lab](https://github.com/Forenly-AI-Lab)**, an open-source contribution program.
 
+**New here?** Start with **[ONBOARDING.md](https://github.com/Forenly-AI-Lab/.github/blob/main/ONBOARDING.md)** — it is shorter than this page and answers "what do I actually do now?"
+
 ## Before anything else — what this is not
 
 This is **not employment, an internship, or a trial period.** There is no salary, no assigned work, no deadlines, and no minimum commitment.
