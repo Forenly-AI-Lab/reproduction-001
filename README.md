@@ -67,6 +67,43 @@ described the 80-episode figure as "converging on the published number." It was
 not converging; it was an optimistic window. A partial run is evidence about a
 partial run, and nothing more.
 
+### What could explain the 3.4-point gap
+
+Listed in the order we would bet on them, not in the order that flatters us.
+None of these is established; the point of writing them down is that the next
+run can eliminate one.
+
+**1. Sampling.** The most boring explanation is also the most likely. At n=500
+the standard error is 2.2 points and the gap is 1.6 SE. A difference this size
+appears about one time in eight by chance alone. Nothing else needs to be true.
+
+**2. A different draw of episodes.** The model card does not state a seed. We
+used `seed=1000`. PushT randomises the pusher position, the block position and
+the block angle on every reset, so a different seed is a different set of 500
+tasks — some sets are simply harder. This is distinguishable from (1) only by
+running more seeds, which we have not done.
+
+**3. The software underneath.** We ran the checkpoint on `lerobot 0.3.2` with
+`torch 2.13.0`, `numpy 2.5.2` and `gym-pusht 0.1.6` — versions that did not
+exist when the number was published. Physics and sampling both flow through
+those libraries. This is the hypothesis this repository exists to examine, and
+it is the one we can say least about.
+
+### What we can already rule out
+
+**Hardware.** Both arms ran `seed=1000`, so the CPU run's 80 episodes are the
+same 80 the GPU run began with, and they agree to within a single episode
+(66.2% against 67.5%). Whatever moved the number, it was not the machine.
+
+### The experiment that would settle it
+
+Run the same evaluation across several seeds. If the spread across seeds covers
+3.4 points, (1) and (2) are sufficient and (3) needs no invoking. If every seed
+lands below 65.4%, the software stack becomes the suspect. That run is
+[issue #4](https://github.com/Forenly-AI-Lab/reproduction-001/issues/4), and it
+is open on purpose: we would rather someone else's number sat next to ours than
+run it a second time ourselves.
+
 Raw output, including all 500 per-episode records and the environment
 fingerprint of the machine that produced them:
 [`results/beam-rtx4090-eval.json`](results/beam-rtx4090-eval.json).
