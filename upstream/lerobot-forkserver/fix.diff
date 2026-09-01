@@ -1,0 +1,12 @@
+--- a/src/lerobot/envs/configs.py
++++ b/src/lerobot/envs/configs.py
+@@ -108,6 +108,9 @@ class EnvConfig(draccus.ChoiceRegistry, abc.ABC):
+ 
+         def _make_one():
++            # Register inside the worker too: AsyncVectorEnv below is forced to
++            # the forkserver start method, and forkserver children start from a
++            # clean interpreter and inherit none of the parent's imports.
++            importlib.import_module(self.package_name)
+             return gym.make(self.gym_id, disable_env_checker=self.disable_env_checker, **self.gym_kwargs)
+ 
+         extra_kwargs: dict = {}

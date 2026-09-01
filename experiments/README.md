@@ -19,3 +19,8 @@ Each directory should contain:
 `notes.md` is not optional and not a formality. A number without the story
 around it cannot be compared to anything. If the run failed, the notes are the
 entire contribution — say where it broke and what you saw.
+
+Before quoting `avg_max_reward` in `results.json`, read
+[`../results/metrics.md`](../results/metrics.md). It is not the average
+overlap its name suggests, and reporting it as one will mislead whoever
+reads your run next.

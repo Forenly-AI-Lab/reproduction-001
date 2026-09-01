@@ -43,6 +43,11 @@ point estimate sits below the claim, and separating a real 3.4-point gap from
 noise would take roughly 1,500 episodes. `avg_max_reward` lands at 0.9461
 against a reported 0.955 — the same direction, slightly low.
 
+**On `avg_max_reward`.** Despite the model card's wording, it is not an
+average overlap: the reward is coverage rescaled by 0.95 and then clipped, so
+all 310 successful episodes report exactly 1.0. What it does and does not
+measure is worked through in [`results/metrics.md`](results/metrics.md).
+
 **On hardware.** Because both arms used `seed=1000`, the CPU run's 80 episodes
 are the *same* 80 episodes the GPU run began with. They agree to within a
 single episode:
